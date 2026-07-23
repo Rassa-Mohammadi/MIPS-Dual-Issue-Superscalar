@@ -85,6 +85,41 @@
       <a name="facing" val="south"/>
       <a name="label" val="stall"/>
     </comp>
+    <comp lib="0" loc="(1490,1490)" name="Splitter">
+      <a name="appear" val="right"/>
+      <a name="bit1" val="0"/>
+      <a name="bit10" val="0"/>
+      <a name="bit11" val="0"/>
+      <a name="bit12" val="0"/>
+      <a name="bit13" val="0"/>
+      <a name="bit14" val="0"/>
+      <a name="bit15" val="0"/>
+      <a name="bit16" val="1"/>
+      <a name="bit17" val="1"/>
+      <a name="bit18" val="1"/>
+      <a name="bit19" val="1"/>
+      <a name="bit2" val="0"/>
+      <a name="bit20" val="1"/>
+      <a name="bit21" val="1"/>
+      <a name="bit22" val="1"/>
+      <a name="bit23" val="1"/>
+      <a name="bit24" val="1"/>
+      <a name="bit25" val="1"/>
+      <a name="bit26" val="1"/>
+      <a name="bit27" val="1"/>
+      <a name="bit28" val="1"/>
+      <a name="bit29" val="1"/>
+      <a name="bit3" val="0"/>
+      <a name="bit30" val="1"/>
+      <a name="bit31" val="1"/>
+      <a name="bit4" val="0"/>
+      <a name="bit5" val="0"/>
+      <a name="bit6" val="0"/>
+      <a name="bit7" val="0"/>
+      <a name="bit8" val="0"/>
+      <a name="bit9" val="0"/>
+      <a name="incoming" val="32"/>
+    </comp>
     <comp lib="0" loc="(1520,1110)" name="Splitter">
       <a name="appear" val="center"/>
       <a name="bit1" val="0"/>
@@ -231,6 +266,10 @@
       <a name="label" val="Opcode2"/>
       <a name="width" val="6"/>
     </comp>
+    <comp lib="0" loc="(1600,1500)" name="Bit Extender">
+      <a name="in_width" val="16"/>
+      <a name="out_width" val="32"/>
+    </comp>
     <comp lib="0" loc="(1600,910)" name="Splitter">
       <a name="bit1" val="0"/>
       <a name="bit10" val="1"/>
@@ -256,6 +295,10 @@
     <comp lib="0" loc="(1620,1330)" name="Tunnel">
       <a name="label" val="shamt2"/>
       <a name="width" val="5"/>
+    </comp>
+    <comp lib="0" loc="(1630,1500)" name="Tunnel">
+      <a name="label" val="imm2"/>
+      <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(1640,950)" name="Bit Extender">
       <a name="in_width" val="16"/>
@@ -1349,12 +1392,15 @@
     <wire from="(1470,1060)" to="(1470,1110)"/>
     <wire from="(1470,1110)" to="(1500,1110)"/>
     <wire from="(1470,1310)" to="(1470,1360)"/>
-    <wire from="(1470,1360)" to="(1520,1360)"/>
+    <wire from="(1470,1360)" to="(1490,1360)"/>
     <wire from="(1470,870)" to="(1470,1040)"/>
     <wire from="(1470,870)" to="(1650,870)"/>
+    <wire from="(1490,1360)" to="(1490,1490)"/>
+    <wire from="(1490,1360)" to="(1520,1360)"/>
     <wire from="(1500,1110)" to="(1520,1110)"/>
     <wire from="(1500,970)" to="(1500,1110)"/>
     <wire from="(1500,970)" to="(1530,970)"/>
+    <wire from="(1510,1500)" to="(1560,1500)"/>
     <wire from="(1540,1080)" to="(1550,1080)"/>
     <wire from="(1540,1090)" to="(1560,1090)"/>
     <wire from="(1540,1100)" to="(1570,1100)"/>
@@ -1389,6 +1435,7 @@
     <wire from="(1570,910)" to="(1570,950)"/>
     <wire from="(1570,910)" to="(1600,910)"/>
     <wire from="(1570,950)" to="(1600,950)"/>
+    <wire from="(1600,1500)" to="(1630,1500)"/>
     <wire from="(1620,890)" to="(1640,890)"/>
     <wire from="(1640,790)" to="(1640,890)"/>
     <wire from="(1640,890)" to="(1650,890)"/>
