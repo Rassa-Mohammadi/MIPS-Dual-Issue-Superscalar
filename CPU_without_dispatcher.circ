@@ -296,7 +296,7 @@
       <a name="label" val="shamt2"/>
       <a name="width" val="5"/>
     </comp>
-    <comp lib="0" loc="(1630,1500)" name="Tunnel">
+    <comp lib="0" loc="(1640,1500)" name="Tunnel">
       <a name="label" val="imm2"/>
       <a name="width" val="32"/>
     </comp>
@@ -1435,7 +1435,7 @@
     <wire from="(1570,910)" to="(1570,950)"/>
     <wire from="(1570,910)" to="(1600,910)"/>
     <wire from="(1570,950)" to="(1600,950)"/>
-    <wire from="(1600,1500)" to="(1630,1500)"/>
+    <wire from="(1600,1500)" to="(1640,1500)"/>
     <wire from="(1620,890)" to="(1640,890)"/>
     <wire from="(1640,790)" to="(1640,890)"/>
     <wire from="(1640,890)" to="(1650,890)"/>
