@@ -740,7 +740,7 @@
     </comp>
     <comp lib="0" loc="(3110,1540)" name="Tunnel">
       <a name="facing" val="east"/>
-      <a name="label" val="PC1"/>
+      <a name="label" val="PC2"/>
       <a name="width" val="9"/>
     </comp>
     <comp lib="0" loc="(3200,1230)" name="Tunnel">

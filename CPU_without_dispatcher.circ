@@ -689,9 +689,9 @@
       <a name="label" val="PC1"/>
       <a name="width" val="9"/>
     </comp>
-    <comp lib="0" loc="(2960,1550)" name="Tunnel">
+    <comp lib="0" loc="(2970,1550)" name="Tunnel">
       <a name="facing" val="east"/>
-      <a name="label" val="PC1"/>
+      <a name="label" val="PC2"/>
       <a name="width" val="9"/>
     </comp>
     <comp lib="0" loc="(3050,1240)" name="Tunnel">
@@ -1537,7 +1537,7 @@
     <wire from="(2900,1250)" to="(2950,1250)"/>
     <wire from="(2910,480)" to="(2960,480)"/>
     <wire from="(2930,780)" to="(3190,780)"/>
-    <wire from="(2960,1550)" to="(3180,1550)"/>
+    <wire from="(2970,1550)" to="(3180,1550)"/>
     <wire from="(2980,1260)" to="(3030,1260)"/>
     <wire from="(2990,1240)" to="(3050,1240)"/>
     <wire from="(2990,1310)" to="(3030,1310)"/>
