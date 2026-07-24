@@ -22,7 +22,8 @@ module tb_scenario1();
     reg [31:0] ireghi, ireglo;
     reg [31:0] data_addr;
 
-    task write2reg(input [4:0] reg_dest, input [31:0] val);
+    task 
+        write2reg(input [4:0] reg_dest, input [31:0] val);
         begin
             if (reg_dest !== 0) ireg[reg_dest] = val;
         end
@@ -139,12 +140,19 @@ module tb_scenario1();
         instructions[1]  = 32'b00100000000010100000000000001010;  // addi $t2, $zero, 10
         instructions[2]  = 32'b00100000000011000000000000010100;  // addi $t4, $zero, 20
         instructions[3]  = 32'b00100000000011010000000000001111;  // addi $t5, $zero, 15
-        instructions[4]  = 32'b00000001001010100100000000100000;  // add $t0, $t1, $t2
-        instructions[5]  = 32'b00000001100011010101100000100010;  // sub $t3, $t4, $t5
+        instructions[4]  = 32'b00000000000000000000000000000000;  // nop
+        instructions[5]  = 32'b00000000000000000000000000000000;  // nop
         instructions[6]  = 32'b00000000000000000000000000000000;  // nop
         instructions[7]  = 32'b00000000000000000000000000000000;  // nop
+        instructions[8]  = 32'b00000000000000000000000000000000;  // nop
+        instructions[9]  = 32'b00000001010010010101100000100010;  // sub $t3, $t2, $t1 // accept
+        // instructions[9]  = 32'b00000001010011000101100000100010;  // sub $t3, $t2, $t4 // fail
+        // instructions[9]  = 32'b00000001001010100100000000100000;  // add $t0, $t1, $t2 // accept
+        // instructions[9]  = 32'b00000001100011010101100000100010;  // sub $t3, $t4, $t5 // fail
+        instructions[10] = 32'b00000000000000000000000000000000;  // nop
+        instructions[11] = 32'b00000000000000000000000000000000;  // nop
         
-        last_instr = 7;
+        last_instr = 12;
 
         rst = 1;
         #8 rst = 0;
@@ -163,7 +171,7 @@ module tb_scenario1();
         #2 rst = 0;  
 
         #8;
-        while (ipc < last_instr && !fail_flag) begin
+        while (ipc < last_instr /*&& !fail_flag*/) begin
             #2;
             
             // If the pipeline signals an instruction reached Write-Back stage this cycle
@@ -184,7 +192,15 @@ module tb_scenario1();
                         $display("failed at %d", j);
                     end
                 end
-                
+                $display("Reality     : ", " [1]%x", R[1], " [2]%x", R[2], " [3]%x", R[3],
+                        " [4]%x", R[4], " [5]%x", R[5], " [6]%x", R[6], " [7]%x", R[7],
+                        " [8]%x", R[8], " [9]%x", R[9], " [10]%x", R[10], " [11]%x", R[11],
+                        " [12]%x", R[12], " [13]%x", R[13], " [14]%x", R[14], " [15]%x", R[15],
+                        " [16]%x", R[16], " [17]%x", R[17], " [18]%x", R[18], " [19]%x", R[19],
+                        " [20]%x", R[20], " [21]%x", R[21], " [22]%x", R[22], " [23]%x", R[23],
+                        " [24]%x", R[24], " [25]%x", R[25], " [26]%x", R[26], " [27]%x", R[27],
+                        " [28]%x", R[28],
+                        " [29]%x", R[29], " [30]%x", R[30], " [31]%x", R[31]);
                 if (fail_flag) begin
                     $display("Expectation : ", " [1]%x", ireg[1], " [2]%x", ireg[2], " [3]%x",
                         ireg[3], " [4]%x", ireg[4], " [5]%x", ireg[5],
