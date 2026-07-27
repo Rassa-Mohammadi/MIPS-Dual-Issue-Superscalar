@@ -1,4 +1,4 @@
-module tb_scenario1();
+module tb_scenario2();
     reg clk, rst, Jen;
     reg [31:0] instructions[512];
     reg [31:0] data_mem[512];
@@ -149,11 +149,15 @@ module tb_scenario1();
         instructions[10]  = 32'b00000000000000000000000000000000;  // nop
         instructions[11]  = 32'b00000000000000000000000000000000;  // nop
         instructions[12]  = 32'b00000001001010100100000000100000;  // add $t0, $t1, $t2
-        instructions[13]  = 32'b00000001100011010101100000100010;  // sub $t3, $t4, $t5
+        instructions[13]  = 32'b00000001000011000101100000100010;  // sub $t3, $t0, $t4
         instructions[14] = 32'b00000000000000000000000000000000;  // nop
         instructions[15] = 32'b00000000000000000000000000000000;  // nop
+        instructions[16] = 32'b00000000000000000000000000000000;  // nop
+        instructions[17] = 32'b00000000000000000000000000000000;  // nop
+        instructions[18] = 32'b00000000000000000000000000000000;  // nop
+        instructions[19] = 32'b00000000000000000000000000000000;  // nop
         
-        last_instr = 16;
+        last_instr = 20;
 
         rst = 1;
         #8 rst = 0;
@@ -180,17 +184,17 @@ module tb_scenario1();
                 $display("ipc : ", ipc);
                 
                 if (InstDone1 === 1'b1) begin
-                    exec_internal();
+                    exec_internal(); 
                 end
                 
                 if (InstDone2 === 1'b1) begin
-                    exec_internal();
+                    exec_internal(); 
                 end
-
+                
                 for (j = 1; j < 32; j++) begin
                     if (R[j] !== ireg[j]) begin
                         fail_flag = 1; 
-                        $display("failed at %d, Expected=%x, Found=%x", j, ireg[j], R[j]);
+                        $display("failed at %d, Expected=%x Found=%x", j, ireg[j], R[j]);
                     end
                 end
                 $display("Reality     : ", " [1]%x", R[1], " [2]%x", R[2], " [3]%x", R[3],
