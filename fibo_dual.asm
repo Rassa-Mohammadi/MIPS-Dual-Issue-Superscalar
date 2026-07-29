@@ -10,10 +10,10 @@
         nop                        
 loop:
         add     $v0, $t0, $t1       # $v0 = F(n-1) + F(n-2) - Lane 1
-        addi    $a0, $a0, -1        # Decrement loop counter - Lane 2
-        add     $t0, $t1, $zero     # Shift n-1 into n-2 - Lane 1
+        add     $t0, $t1, $zero     # Shift n-1 into n-2 - Lane 2
+        addi    $a0, $a0, -1        # Decrement loop counter - Lane 1
         nop                         # Lane 2
-        # delay slots for $v0 and $a0 to reach write back
+        # delay slots for $v0 to reach write back
         nop                         # Lane 1
         nop                         # Lane 2
         nop                         # Lane 1

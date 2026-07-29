@@ -42,10 +42,9 @@ module tb_dual_issue_fixed;
             
             ipc = ipc + 1;
             
-            // 2. Process Delay Slots
             if (delay_slots_remaining > 0) begin
                 delay_slots_remaining = delay_slots_remaining - 1;
-                // If the countdown hits 0, apply the jump for the NEXT instruction
+                // apply jump/branch
                 if (delay_slots_remaining == 0) begin
                     ipc = pending_branch_target;
                 end
@@ -124,7 +123,7 @@ module tb_dual_issue_fixed;
         .Jen(Jen),
         .Jin(Jin),
         .Jout(Jout),
-        .InstDone1(InstDone1), // Dual issue ports
+        .InstDone1(InstDone1),
         .InstDone2(InstDone2),
         .R1(R[1]), .R2(R[2]), .R3(R[3]), .R4(R[4]), .R5(R[5]),
         .R6(R[6]), .R7(R[7]), .R8(R[8]), .R9(R[9]), .R10(R[10]),
@@ -155,43 +154,43 @@ module tb_dual_issue_fixed;
         delay_slots_remaining = 0;
         fail_flag = 0;
 
-        instructions[0]  = 32'b00100000000111010000100000000000;  // addi  (sp = 2048) - Lane 1
-        instructions[1]  = 32'b00000000000000000100000000100000;  // add   (t0 = 0)    - Lane 2
-        instructions[2]  = 32'b00100000000010010000000000000001;  // addi  (t1 = 1)    - Lane 1
-        instructions[3]  = 32'b00100000000001000000000000001000;  // addi  (a0 = 8)    - Lane 2
-        instructions[4]  = 32'b00000000000000000000000000000000;  // nop               - Lane 1
-        instructions[5]  = 32'b00000000000000000000000000000000;  // nop               - Lane 2
-        instructions[6]  = 32'b00000000000000000000000000000000;  // nop               - Lane 1
-        instructions[7]  = 32'b00000000000000000000000000000000;  // nop               - Lane 2
-        instructions[8]  = 32'b00000000000000000000000000000000;  // nop               - Lane 1
-        instructions[9]  = 32'b00000000000000000000000000000000;  // nop               - Lane 2
+        instructions[0]  = 32'b00100000000111010000100000000000;  // addi  (sp = 2048)    - Lane 1
+        instructions[1]  = 32'b00000000000000000100000000100000;  // add   (t0 = 0)       - Lane 2
+        instructions[2]  = 32'b00100000000010010000000000000001;  // addi  (t1 = 1)       - Lane 1
+        instructions[3]  = 32'b00100000000001000000000000001000;  // addi  (a0 = 8)       - Lane 2
+        instructions[4]  = 32'b00000000000000000000000000000000;  // nop                  - Lane 1
+        instructions[5]  = 32'b00000000000000000000000000000000;  // nop                  - Lane 2
+        instructions[6]  = 32'b00000000000000000000000000000000;  // nop                  - Lane 1
+        instructions[7]  = 32'b00000000000000000000000000000000;  // nop                  - Lane 2
+        instructions[8]  = 32'b00000000000000000000000000000000;  // nop                  - Lane 1
+        instructions[9]  = 32'b00000000000000000000000000000000;  // nop                  - Lane 2
         instructions[10] = 32'b00000001000010010001000000100000;  // add   (v0 = t0 + t1) - Lane 1
-        instructions[11] = 32'b00100000100001001111111111111111;  // addi  (a0 = a0 - 1)  - Lane 2
-        instructions[12] = 32'b00000001001000000100000000100000;  // add   (t0 = t1)      - Lane 1
+        instructions[11] = 32'b00000001001000000100000000100000;  // add   (t0 = t1)      - Lane 2
+        instructions[12] = 32'b00100000100001001111111111111111;  // addi  (a0 = a0 - 1)  - Lane 1
         instructions[13] = 32'b00000000000000000000000000000000;  // nop                  - Lane 2
-        instructions[14] = 32'b00000000000000000000000000000000;  // nop - Lane 1
-        instructions[15] = 32'b00000000000000000000000000000000;  // nop - Lane 2
-        instructions[16] = 32'b00000000000000000000000000000000;  // nop - Lane 1
-        instructions[17] = 32'b00000000000000000000000000000000;  // nop - Lane 2
-        instructions[18] = 32'b00000000000000000000000000000000;  // nop - Lane 1
-        instructions[19] = 32'b00000000000000000000000000000000;  // nop - Lane 2
+        instructions[14] = 32'b00000000000000000000000000000000;  // nop                  - Lane 1
+        instructions[15] = 32'b00000000000000000000000000000000;  // nop                  - Lane 2
+        instructions[16] = 32'b00000000000000000000000000000000;  // nop                  - Lane 1
+        instructions[17] = 32'b00000000000000000000000000000000;  // nop                  - Lane 2
+        instructions[18] = 32'b00000000000000000000000000000000;  // nop                  - Lane 1
+        instructions[19] = 32'b00000000000000000000000000000000;  // nop                  - Lane 2
         instructions[20] = 32'b00000000010000000100100000100000;  // add   (t1 = v0)      - Lane 1 
         instructions[21] = 32'b00000000000000000000000000000000;  // nop                  - Lane 2
-        instructions[22] = 32'b00000000000000000000000000000000;  // nop - Lane 1
-        instructions[23] = 32'b00000000000000000000000000000000;  // nop - Lane 2
-        instructions[24] = 32'b00000000000000000000000000000000;  // nop - Lane 1
-        instructions[25] = 32'b00000000000000000000000000000000;  // nop - Lane 2
-        instructions[26] = 32'b00010100100000001111111111101111;  // bnez  (Offset = -17) - Lane 1
-        instructions[27] = 32'b00000000000000000000000000000000;  // nop                  - Lane 2 (Delay Slot 1)
-        instructions[28] = 32'b00000000000000000000000000000000;  // nop                  - Lane 1 (Delay Slot 2)
-        instructions[29] = 32'b00000000000000000000000000000000;  // nop                  - Lane 2 (Delay Slot 3)
+        instructions[22] = 32'b00000000000000000000000000000000;  // nop                  - Lane 1
+        instructions[23] = 32'b00000000000000000000000000000000;  // nop                  - Lane 2
+        instructions[24] = 32'b00000000000000000000000000000000;  // nop                  - Lane 1
+        instructions[25] = 32'b00000000000000000000000000000000;  // nop                  - Lane 2
+        instructions[26] = 32'b00010100100000001111111111101111;  // bnez  (offset = -17) - Lane 1
+        instructions[27] = 32'b00000000000000000000000000000000;  // nop                  - Lane 2 
+        instructions[28] = 32'b00000000000000000000000000000000;  // nop                  - Lane 1 
+        instructions[29] = 32'b00000000000000000000000000000000;  // nop                  - Lane 2 
         instructions[30] = 32'b00001000000000000000000000011110;  // j     (Target = 30)  - Lane 1
-        instructions[31] = 32'b00000000000000000000000000000000;  // nop (Delay Slot 1)   - Lane 2
-        instructions[32] = 32'b00000000000000000000000000000000;  // nop (Delay Slot 2)   - Lane 1
-        instructions[33] = 32'b00000000000000000000000000000000;  // nop (Delay Slot 3)   - Lane 2
+        instructions[31] = 32'b00000000000000000000000000000000;  // nop                  - Lane 2
+        instructions[32] = 32'b00000000000000000000000000000000;  // nop                  - Lane 1
+        instructions[33] = 32'b00000000000000000000000000000000;  // nop                  - Lane 2
 
         
-        last_instr = 31; // Terminate condition for simulation length
+        last_instr = 31;
 
         rst = 1;
         #8 rst = 0;
@@ -213,7 +212,6 @@ module tb_dual_issue_fixed;
         while (ipc < last_instr && !fail_flag) begin
             #2;
             
-            // Dual issue triggers execution in the golden model if EITHER lane finishes an instruction
             if (InstDone1 === 1'b1 || InstDone2 === 1'b1) begin
                 
                 if (InstDone1 === 1'b1) begin
