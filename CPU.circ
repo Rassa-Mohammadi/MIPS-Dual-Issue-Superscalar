@@ -1554,20 +1554,22 @@
     </comp>
     <comp lib="4" loc="(4480,1700)" name="Register">
       <a name="appearance" val="logisim_evolution"/>
+      <a name="label" val="HI2"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="4" loc="(4480,1870)" name="Register">
       <a name="appearance" val="logisim_evolution"/>
+      <a name="label" val="LO2"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="4" loc="(4490,1100)" name="Register">
       <a name="appearance" val="logisim_evolution"/>
-      <a name="label" val="LO"/>
+      <a name="label" val="LO1"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="4" loc="(4490,930)" name="Register">
       <a name="appearance" val="logisim_evolution"/>
-      <a name="label" val="HI"/>
+      <a name="label" val="HI1"/>
       <a name="width" val="32"/>
     </comp>
     <comp lib="4" loc="(4740,180)" name="D Flip-Flop">

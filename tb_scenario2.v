@@ -152,12 +152,8 @@ module tb_scenario2();
         instructions[13]  = 32'b00000001000011000101100000100010;  // sub $t3, $t0, $t4
         instructions[14] = 32'b00000000000000000000000000000000;  // nop
         instructions[15] = 32'b00000000000000000000000000000000;  // nop
-        instructions[16] = 32'b00000000000000000000000000000000;  // nop
-        instructions[17] = 32'b00000000000000000000000000000000;  // nop
-        instructions[18] = 32'b00000000000000000000000000000000;  // nop
-        instructions[19] = 32'b00000000000000000000000000000000;  // nop
         
-        last_instr = 20;
+        last_instr = 16;
 
         rst = 1;
         #8 rst = 0;
