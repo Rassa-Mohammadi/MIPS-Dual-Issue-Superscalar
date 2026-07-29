@@ -806,6 +806,10 @@
       <a name="label" val="ReadData1"/>
       <a name="width" val="32"/>
     </comp>
+    <comp lib="0" loc="(710,1340)" name="Tunnel">
+      <a name="facing" val="east"/>
+      <a name="label" val="reset"/>
+    </comp>
     <comp lib="0" loc="(760,950)" name="Tunnel">
       <a name="label" val="Jout"/>
       <a name="width" val="32"/>
@@ -814,9 +818,20 @@
       <a name="facing" val="south"/>
       <a name="label" val="PCSource"/>
     </comp>
+    <comp lib="0" loc="(870,1530)" name="Constant">
+      <a name="value" val="0xfffffffc"/>
+      <a name="width" val="32"/>
+    </comp>
+    <comp lib="0" loc="(870,1580)" name="Constant">
+      <a name="value" val="0x0"/>
+      <a name="width" val="32"/>
+    </comp>
     <comp lib="0" loc="(880,990)" name="Tunnel">
       <a name="facing" val="north"/>
       <a name="label" val="reset"/>
+    </comp>
+    <comp lib="0" loc="(890,1270)" name="Constant">
+      <a name="width" val="32"/>
     </comp>
     <comp lib="0" loc="(910,770)" name="Tunnel">
       <a name="facing" val="south"/>
@@ -825,6 +840,30 @@
     <comp lib="0" loc="(910,950)" name="Tunnel">
       <a name="facing" val="east"/>
       <a name="label" val="clk"/>
+    </comp>
+    <comp lib="0" loc="(990,1410)" name="Pin">
+      <a name="appearance" val="classic"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="Total_Clock_Cycles"/>
+      <a name="output" val="true"/>
+      <a name="radix" val="10signed"/>
+      <a name="width" val="32"/>
+    </comp>
+    <comp lib="0" loc="(990,1520)" name="Pin">
+      <a name="appearance" val="classic"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="Total_Issued_Instructions"/>
+      <a name="output" val="true"/>
+      <a name="radix" val="10signed"/>
+      <a name="width" val="32"/>
+    </comp>
+    <comp lib="0" loc="(990,1580)" name="Pin">
+      <a name="appearance" val="classic"/>
+      <a name="facing" val="west"/>
+      <a name="label" val="Total_Stalls"/>
+      <a name="output" val="true"/>
+      <a name="radix" val="10signed"/>
+      <a name="width" val="32"/>
     </comp>
     <comp lib="1" loc="(130,1020)" name="NOT Gate">
       <a name="facing" val="south"/>
@@ -880,6 +919,12 @@
     <comp lib="3" loc="(590,840)" name="Adder">
       <a name="width" val="9"/>
     </comp>
+    <comp lib="3" loc="(940,1260)" name="Adder">
+      <a name="width" val="32"/>
+    </comp>
+    <comp lib="3" loc="(940,1520)" name="Adder">
+      <a name="width" val="32"/>
+    </comp>
     <comp lib="4" loc="(3230,1100)" name="Register">
       <a name="appearance" val="logisim_evolution"/>
       <a name="label" val="HI"/>
@@ -897,6 +942,11 @@
     </comp>
     <comp lib="4" loc="(4710,1040)" name="D Flip-Flop">
       <a name="appearance" val="logisim_evolution"/>
+    </comp>
+    <comp lib="4" loc="(730,1220)" name="Register">
+      <a name="appearance" val="logisim_evolution"/>
+      <a name="label" val="Cycles"/>
+      <a name="width" val="32"/>
     </comp>
     <comp loc="(1140,890)" name="IFID"/>
     <comp loc="(1740,1020)" name="RF"/>
@@ -1225,26 +1275,47 @@
     <wire from="(500,610)" to="(500,630)"/>
     <wire from="(500,610)" to="(750,610)"/>
     <wire from="(5010,880)" to="(5050,880)"/>
-    <wire from="(520,1140)" to="(520,1190)"/>
+    <wire from="(520,1140)" to="(520,1180)"/>
+    <wire from="(520,1180)" to="(520,1190)"/>
+    <wire from="(520,1180)" to="(580,1180)"/>
     <wire from="(520,970)" to="(520,1140)"/>
     <wire from="(520,970)" to="(530,970)"/>
     <wire from="(530,850)" to="(550,850)"/>
+    <wire from="(580,1180)" to="(580,1290)"/>
+    <wire from="(580,1290)" to="(730,1290)"/>
     <wire from="(590,840)" to="(810,840)"/>
     <wire from="(600,670)" to="(650,670)"/>
+    <wire from="(680,1190)" to="(680,1250)"/>
+    <wire from="(680,1190)" to="(950,1190)"/>
+    <wire from="(680,1250)" to="(730,1250)"/>
+    <wire from="(710,1340)" to="(760,1340)"/>
     <wire from="(750,930)" to="(920,930)"/>
     <wire from="(750,950)" to="(760,950)"/>
+    <wire from="(760,1310)" to="(760,1340)"/>
     <wire from="(770,560)" to="(770,590)"/>
     <wire from="(780,600)" to="(810,600)"/>
     <wire from="(780,620)" to="(1410,620)"/>
+    <wire from="(790,1250)" to="(810,1250)"/>
+    <wire from="(810,1250)" to="(810,1410)"/>
+    <wire from="(810,1250)" to="(900,1250)"/>
+    <wire from="(810,1410)" to="(810,1510)"/>
+    <wire from="(810,1410)" to="(990,1410)"/>
+    <wire from="(810,1510)" to="(900,1510)"/>
     <wire from="(810,600)" to="(810,840)"/>
     <wire from="(810,840)" to="(810,910)"/>
     <wire from="(810,910)" to="(920,910)"/>
+    <wire from="(870,1530)" to="(900,1530)"/>
+    <wire from="(870,1580)" to="(990,1580)"/>
     <wire from="(880,970)" to="(880,990)"/>
     <wire from="(880,970)" to="(920,970)"/>
+    <wire from="(890,1270)" to="(900,1270)"/>
     <wire from="(910,770)" to="(910,790)"/>
     <wire from="(910,820)" to="(910,890)"/>
     <wire from="(910,890)" to="(920,890)"/>
     <wire from="(910,950)" to="(920,950)"/>
+    <wire from="(940,1260)" to="(950,1260)"/>
+    <wire from="(940,1520)" to="(990,1520)"/>
+    <wire from="(950,1190)" to="(950,1260)"/>
   </circuit>
   <circuit name="ALU">
     <a name="appearance" val="custom"/>

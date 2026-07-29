@@ -22,6 +22,10 @@ module tb_scenario2();
     reg [31:0] ireghi, ireglo;
     reg [31:0] data_addr;
 
+    wire [31:0] Total_Clock_Cycles;
+    wire [31:0] Total_Issued_Instructions;
+    wire [31:0] Total_Stalls;
+
     task 
         write2reg(input [4:0] reg_dest, input [31:0] val);
         begin
@@ -113,7 +117,10 @@ module tb_scenario2();
         .R16(R[16]), .R17(R[17]), .R18(R[18]), .R19(R[19]), .R20(R[20]),
         .R21(R[21]), .R22(R[22]), .R23(R[23]), .R24(R[24]), .R25(R[25]),
         .R26(R[26]), .R27(R[27]), .R28(R[28]), .R29(R[29]), .R30(R[30]),
-        .R31(R[31])
+        .R31(R[31]),
+        .Total_Clock_Cycles(Total_Clock_Cycles),
+        .Total_Issued_Instructions(Total_Issued_Instructions),
+        .Total_Stalls(Total_Stalls)
     );
 
     initial begin
@@ -152,8 +159,9 @@ module tb_scenario2();
         instructions[13]  = 32'b00000001000011000101100000100010;  // sub $t3, $t0, $t4
         instructions[14] = 32'b00000000000000000000000000000000;  // nop
         instructions[15] = 32'b00000000000000000000000000000000;  // nop
+        instructions[16] = 32'b00000000000000000000000000000000;  // nop
         
-        last_instr = 16;
+        last_instr = 17;
 
         rst = 1;
         #8 rst = 0;
@@ -229,6 +237,9 @@ module tb_scenario2();
         end
 
         if (!fail_flag) begin
+            $display("Total Clock Cycles: %d", Total_Clock_Cycles);
+            $display("Total Issued Instructions: %d", Total_Issued_Instructions);
+            $display("Total Stalls: %d", Total_Stalls);
             $display("ACCEPTED");
         end
 

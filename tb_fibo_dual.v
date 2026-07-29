@@ -24,6 +24,10 @@ module tb_dual_issue_fixed;
     reg [31:0] ireghi, ireglo;
     reg [31:0] data_addr;
 
+    wire [31:0] Total_Clock_Cycles;
+    wire [31:0] Total_Issued_Instructions;
+    wire [31:0] Total_Stalls;
+
     task write2reg(input [4:0] reg_dest, input [31:0] val);
         begin
             if (reg_dest !== 0) ireg[reg_dest] = val;
@@ -131,7 +135,10 @@ module tb_dual_issue_fixed;
         .R16(R[16]), .R17(R[17]), .R18(R[18]), .R19(R[19]), .R20(R[20]),
         .R21(R[21]), .R22(R[22]), .R23(R[23]), .R24(R[24]), .R25(R[25]),
         .R26(R[26]), .R27(R[27]), .R28(R[28]), .R29(R[29]), .R30(R[30]),
-        .R31(R[31])
+        .R31(R[31]),
+        .Total_Clock_Cycles(Total_Clock_Cycles),
+        .Total_Issued_Instructions(Total_Issued_Instructions),
+        .Total_Stalls(Total_Stalls)
     );
 
     initial begin
@@ -230,16 +237,7 @@ module tb_dual_issue_fixed;
                         $display("failed at %d, Expected=%x, Found=%x", j, ireg[j], R[j]);
                     end
                 end
-                $display("Expectation : ", " [1]%x", ireg[1], " [2]%x", ireg[2], " [3]%x",
-                        ireg[3], " [4]%x", ireg[4], " [5]%x", ireg[5],
-                        " [6]%x", ireg[6], " [7]%x", ireg[7],
-                        " [8]%x", ireg[8], " [9]%x", ireg[9], " [10]%x", ireg[10], " [11]%x", ireg[11],
-                        " [12]%x", ireg[12], " [13]%x", ireg[13], " [14]%x", ireg[14], " [15]%x", ireg[15], 
-                        " [16]%x", ireg[16], " [17]%x", ireg[17], " [18]%x", ireg[18],
-                        " [19]%x", ireg[19], " [20]%x", ireg[20], " [21]%x", ireg[21], " [22]%x", ireg[22], 
-                        " [23]%x", ireg[23], " [24]%x", ireg[24], " [25]%x", ireg[25],
-                        " [26]%x", ireg[26], " [27]%x", ireg[27], " [28]%x", ireg[28],
-                        " [29]%x", ireg[29], " [30]%x", ireg[30], " [31]%x", ireg[31]);
+                
                 if (fail_flag) begin
                     $display("Expectation : ", " [1]%x", ireg[1], " [2]%x", ireg[2], " [3]%x",
                         ireg[3], " [4]%x", ireg[4], " [5]%x", ireg[5],
@@ -267,6 +265,9 @@ module tb_dual_issue_fixed;
         end
 
         if (!fail_flag) begin
+            $display("Total Clock Cycles: %d", Total_Clock_Cycles);
+            $display("Total Issued Instructions: %d", Total_Issued_Instructions);
+            $display("Total Stalls: %d", Total_Stalls);
             $display("ACCEPTED");
         end
 
