@@ -1,11 +1,11 @@
-module tb_scenario3();
+module tb;
     reg clk, rst, Jen;
     reg [31:0] instructions[512];
     reg [31:0] data_mem[512];
 
     reg [31:0] Jin;
     wire [31:0] Jout;
-    wire InstDone1, InstDone2;
+    wire InstDone;
     wire [31:0] R[32];
     assign R[0] = 0;
 
@@ -26,8 +26,7 @@ module tb_scenario3();
     wire [31:0] Total_Issued_Instructions;
     wire [31:0] Total_Stalls;
 
-    task 
-        write2reg(input [4:0] reg_dest, input [31:0] val);
+    task write2reg(input [4:0] reg_dest, input [31:0] val);
         begin
             if (reg_dest !== 0) ireg[reg_dest] = val;
         end
@@ -109,8 +108,7 @@ module tb_scenario3();
         .Jen(Jen),
         .Jin(Jin),
         .Jout(Jout),
-        .InstDone1(InstDone1),
-        .InstDone2(InstDone2),
+        .InstDone(InstDone),
         .R1(R[1]), .R2(R[2]), .R3(R[3]), .R4(R[4]), .R5(R[5]),
         .R6(R[6]), .R7(R[7]), .R8(R[8]), .R9(R[9]), .R10(R[10]),
         .R11(R[11]), .R12(R[12]), .R13(R[13]), .R14(R[14]), .R15(R[15]),
@@ -142,7 +140,7 @@ module tb_scenario3();
         ipc = 0;
         next_ipc = 1; // Initializes delay slot buffer
         fail_flag = 0;
-        
+
         // Initialization
         instructions[0]  = 32'b00100000000001000000000000001000;  // addi $a0, $zero, 8
         instructions[1]  = 32'b00100000000010010000000000000001;  // addi $t1, $zero, 1
@@ -165,61 +163,56 @@ module tb_scenario3();
         instructions[18] = 32'b00100000000101010000000000010000;  // addi $s5, $zero, 16
         instructions[19] = 32'b00100000000101100000000000010001;  // addi $s6, $zero, 17
         instructions[20] = 32'b00100000000101110000000000010010;  // addi $s7, $zero, 18
-        instructions[21] = 32'b00000000000000000000000000000000;  // nop
 
-        // loop: (index 22)
-        instructions[22] = 32'b00100000100001001111111111111111;  // addi $a0, $a0, -1
-        instructions[23] = 32'b00100001000010000000000000000001;  // addi $t0, $t0, 1
-        instructions[24] = 32'b00000001010010110101000000100010;  // sub  $t2, $t2, $t3
-        instructions[25] = 32'b00000001100010110110000000100100;  // and  $t4, $t4, $t3
-        instructions[26] = 32'b00000001101010110110100000100101;  // or   $t5, $t5, $t3
-        instructions[27] = 32'b00000001110010110111000000100110;  // xor  $t6, $t6, $t3
-        instructions[28] = 32'b00000001111010110111100000100000;  // add  $t7, $t7, $t3
-        instructions[29] = 32'b00000011000010111100000000100010;  // sub  $t8, $t8, $t3
-        instructions[30] = 32'b00000011001010111100100000100100;  // and  $t9, $t9, $t3
-        instructions[31] = 32'b00000000010010110001000000100101;  // or   $v0, $v0, $t3
-        instructions[32] = 32'b00000000011010110001100000100110;  // xor  $v1, $v1, $t3
-        instructions[33] = 32'b00000010000010111000000000100000;  // add  $s0, $s0, $t3
-        instructions[34] = 32'b00000010001010111000100000100010;  // sub  $s1, $s1, $t3
-        instructions[35] = 32'b00000010010010111001000000100100;  // and  $s2, $s2, $t3
-        instructions[36] = 32'b00000010011010111001100000100101;  // or   $s3, $s3, $t3
-        instructions[37] = 32'b00000010100010111010000000100110;  // xor  $s4, $s4, $t3
-        instructions[38] = 32'b00000010101010111010100000100000;  // add  $s5, $s5, $t3
-        instructions[39] = 32'b00000010110010111011000000100010;  // sub  $s6, $s6, $t3
-        instructions[40] = 32'b00000010111010111011100000100100;  // and  $s7, $s7, $t3
-        instructions[41] = 32'b00000001001010110100100000100101;  // or   $t1, $t1, $t3
-        instructions[42] = 32'b00100001011010110000000000000001;  // addi $t3, $t3, 1
-        instructions[43] = 32'b00000001100010000110000000100000;  // add  $t4, $t4, $t0
-        instructions[44] = 32'b00000001101010000110100000100010;  // sub  $t5, $t5, $t0
-        instructions[45] = 32'b00000001110010000111000000100100;  // and  $t6, $t6, $t0
-        instructions[46] = 32'b00000001111010000111100000100101;  // or   $t7, $t7, $t0
-        instructions[47] = 32'b00000011000010001100000000100110;  // xor  $t8, $t8, $t0
-        instructions[48] = 32'b00000011001010001100100000100000;  // add  $t9, $t9, $t0
-        instructions[49] = 32'b00000000010010000001000000100010;  // sub  $v0, $v0, $t0
-        instructions[50] = 32'b00000000011010000001100000100100;  // and  $v1, $v1, $t0
-        instructions[51] = 32'b00000010000010001000000000100101;  // or   $s0, $s0, $t0
-        instructions[52] = 32'b00000010001010001000100000100110;  // xor  $s1, $s1, $t0
-        instructions[53] = 32'b00000010010010001001000000100000;  // add  $s2, $s2, $t0
-        instructions[54] = 32'b00000010011010001001100000100010;  // sub  $s3, $s3, $t0
-        instructions[55] = 32'b00000010100010001010000000100100;  // and  $s4, $s4, $t0
-        instructions[56] = 32'b00000010101010001010100000100101;  // or   $s5, $s5, $t0
-        instructions[57] = 32'b00000010110010001011000000100110;  // xor  $s6, $s6, $t0
-        instructions[58] = 32'b00000010111010001011100000100000;  // add  $s7, $s7, $t0
-        instructions[59] = 32'b00000001001010000100100000100010;  // sub  $t1, $t1, $t0
-        instructions[60] = 32'b00000001010010000101000000100100;  // and  $t2, $t2, $t0
-        instructions[61] = 32'b00000001100010000110000000100101;  // or   $t4, $t4, $t0
-        instructions[62] = 32'b00010100100000001111111111010111;  // bnez $a0, loop (target = 22, offset = -41)
-        instructions[63] = 32'b00000000000000000000000000000000;  // nop
+        // loop: (index 21)
+        instructions[21] = 32'b00100000100001001111111111111111;  // addi $a0, $a0, -1
+        instructions[22] = 32'b00100001000010000000000000000001;  // addi $t0, $t0, 1
+        instructions[23] = 32'b00000001010010110101000000100010;  // sub  $t2, $t2, $t3
+        instructions[24] = 32'b00000001100010110110000000100100;  // and  $t4, $t4, $t3
+        instructions[25] = 32'b00000001101010110110100000100101;  // or   $t5, $t5, $t3
+        instructions[26] = 32'b00000001110010110111000000100110;  // xor  $t6, $t6, $t3
+        instructions[27] = 32'b00000001111010110111100000100000;  // add  $t7, $t7, $t3
+        instructions[28] = 32'b00000011000010111100000000100010;  // sub  $t8, $t8, $t3
+        instructions[29] = 32'b00000011001010111100100000100100;  // and  $t9, $t9, $t3
+        instructions[30] = 32'b00000000010010110001000000100101;  // or   $v0, $v0, $t3
+        instructions[31] = 32'b00000000011010110001100000100110;  // xor  $v1, $v1, $t3
+        instructions[32] = 32'b00000010000010111000000000100000;  // add  $s0, $s0, $t3
+        instructions[33] = 32'b00000010001010111000100000100010;  // sub  $s1, $s1, $t3
+        instructions[34] = 32'b00000010010010111001000000100100;  // and  $s2, $s2, $t3
+        instructions[35] = 32'b00000010011010111001100000100101;  // or   $s3, $s3, $t3
+        instructions[36] = 32'b00000010100010111010000000100110;  // xor  $s4, $s4, $t3
+        instructions[37] = 32'b00000010101010111010100000100000;  // add  $s5, $s5, $t3
+        instructions[38] = 32'b00000010110010111011000000100010;  // sub  $s6, $s6, $t3
+        instructions[39] = 32'b00000010111010111011100000100100;  // and  $s7, $s7, $t3
+        instructions[40] = 32'b00000001001010110100100000100101;  // or   $t1, $t1, $t3
+        instructions[41] = 32'b00100001011010110000000000000001;  // addi $t3, $t3, 1
+        instructions[42] = 32'b00000001100010000110000000100000;  // add  $t4, $t4, $t0
+        instructions[43] = 32'b00000001101010000110100000100010;  // sub  $t5, $t5, $t0
+        instructions[44] = 32'b00000001110010000111000000100100;  // and  $t6, $t6, $t0
+        instructions[45] = 32'b00000001111010000111100000100101;  // or   $t7, $t7, $t0
+        instructions[46] = 32'b00000011000010001100000000100110;  // xor  $t8, $t8, $t0
+        instructions[47] = 32'b00000011001010001100100000100000;  // add  $t9, $t9, $t0
+        instructions[48] = 32'b00000000010010000001000000100010;  // sub  $v0, $v0, $t0
+        instructions[49] = 32'b00000000011010000001100000100100;  // and  $v1, $v1, $t0
+        instructions[50] = 32'b00000010000010001000000000100101;  // or   $s0, $s0, $t0
+        instructions[51] = 32'b00000010001010001000100000100110;  // xor  $s1, $s1, $t0
+        instructions[52] = 32'b00000010010010001001000000100000;  // add  $s2, $s2, $t0
+        instructions[53] = 32'b00000010011010001001100000100010;  // sub  $s3, $s3, $t0
+        instructions[54] = 32'b00000010100010001010000000100100;  // and  $s4, $s4, $t0
+        instructions[55] = 32'b00000010101010001010100000100101;  // or   $s5, $s5, $t0
+        instructions[56] = 32'b00000010110010001011000000100110;  // xor  $s6, $s6, $t0
+        instructions[57] = 32'b00000010111010001011100000100000;  // add  $s7, $s7, $t0
+        instructions[58] = 32'b00000001001010000100100000100010;  // sub  $t1, $t1, $t0
+        instructions[59] = 32'b00000001010010000101000000100100;  // and  $t2, $t2, $t0
+        instructions[60] = 32'b00000001100010000110000000100101;  // or   $t4, $t4, $t0
+        instructions[61] = 32'b00010100100000001111111111010111;  // bnez $a0, loop (target = 21, offset = -41)
+        instructions[62] = 32'b00000000000000000000000000000000;  // nop
+
+        // done: (index 63)
+        instructions[63] = 32'b00001000000100000000000000111111;  // j done (target = 63)
         instructions[64] = 32'b00000000000000000000000000000000;  // nop
-        instructions[65] = 32'b00000000000000000000000000000000;  // nop
-
-        // done: (index 66)
-        instructions[66] = 32'b00001000000000000000000001000010;  // j done (target = 66)
-        instructions[67] = 32'b00000000000000000000000000000000;  // nop
-        instructions[68] = 32'b00000000000000000000000000000000;  // nop
-        instructions[69] = 32'b00000000000000000000000000000000;  // nop
         
-        last_instr = 67;
+        last_instr = 64;
 
         rst = 1;
         #8 rst = 0;
@@ -238,36 +231,20 @@ module tb_scenario3();
         #2 rst = 0;  
 
         #8;
-        while (ipc < last_instr /*&& !fail_flag*/) begin
+        while (ipc < last_instr && !fail_flag) begin
             #2;
             
             // If the pipeline signals an instruction reached Write-Back stage this cycle
-            if (InstDone1 === 1'b1 || InstDone2 === 1'b1) begin
+            if (InstDone === 1'b1) begin
                 $display("ipc : ", ipc);
-                
-                if (InstDone1 === 1'b1) begin
-                    exec_internal(); 
-                end
-                
-                if (InstDone2 === 1'b1) begin
-                    exec_internal(); 
-                end
-                
+                exec_internal();
                 for (j = 1; j < 32; j++) begin
                     if (R[j] !== ireg[j]) begin
                         fail_flag = 1; 
-                        $display("failed at %d, Expected=%x Found=%x", j, ireg[j], R[j]);
+                        $display("failed at %d", j);
                     end
                 end
-                $display("Reality     : ", " [1]%x", R[1], " [2]%x", R[2], " [3]%x", R[3],
-                        " [4]%x", R[4], " [5]%x", R[5], " [6]%x", R[6], " [7]%x", R[7],
-                        " [8]%x", R[8], " [9]%x", R[9], " [10]%x", R[10], " [11]%x", R[11],
-                        " [12]%x", R[12], " [13]%x", R[13], " [14]%x", R[14], " [15]%x", R[15],
-                        " [16]%x", R[16], " [17]%x", R[17], " [18]%x", R[18], " [19]%x", R[19],
-                        " [20]%x", R[20], " [21]%x", R[21], " [22]%x", R[22], " [23]%x", R[23],
-                        " [24]%x", R[24], " [25]%x", R[25], " [26]%x", R[26], " [27]%x", R[27],
-                        " [28]%x", R[28],
-                        " [29]%x", R[29], " [30]%x", R[30], " [31]%x", R[31]);
+                
                 if (fail_flag) begin
                     $display("Expectation : ", " [1]%x", ireg[1], " [2]%x", ireg[2], " [3]%x",
                         ireg[3], " [4]%x", ireg[4], " [5]%x", ireg[5],
