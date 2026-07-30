@@ -1,4 +1,4 @@
-module tb_fibo_single;
+module tb;
     reg clk, rst, Jen;
     reg [31:0] instructions[512];
     reg [31:0] data_mem[512];
@@ -141,30 +141,28 @@ module tb_fibo_single;
         next_ipc = 1; // Initializes delay slot buffer
         fail_flag = 0;
 
-        instructions[0]  = 32'b00100000000111010000100000000000;  // addi (I)  | $sp = $zero + 2048
-        instructions[1]  = 32'b00000000000000000100000000100000;  // add  (R)  | $t0 = $zero + $zero
-        instructions[2]  = 32'b00100000000010010000000000000001;  // addi (I)  | $t1 = $zero + 1
-        instructions[3]  = 32'b00100000000001000000000000001000;  // addi (I)  | $a0 = $zero + 8
-        instructions[4]  = 32'b00000000000000000000000000000000;  // nop  (R)
-        instructions[5]  = 32'b00000000000000000000000000000000;  // nop  (R)
-        instructions[6]  = 32'b00000000000000000000000000000000;  // nop  (R)
-        // loop:
-        instructions[7]  = 32'b00000001000010010001000000100000;  // add  (R)  | $v0 = $t0 + $t1
-        instructions[8]  = 32'b00000001001000000100000000100000;  // add  (R)  | $t0 = $t1 + $zero
-        instructions[9]  = 32'b00000000000000000000000000000000;  // nop  (R)
-        instructions[10] = 32'b00000000000000000000000000000000;  // nop  (R)
-        instructions[11] = 32'b00000000000000000000000000000000;  // nop  (R)
-        instructions[12] = 32'b00000000010000000100100000100000;  // add  (R)  | $t1 = $v0 + $zero
-        instructions[13] = 32'b00100000100001001111111111111111;  // addi (I)  | $a0 = $a0 - 1
-        instructions[14] = 32'b00000000000000000000000000000000;  // nop  (R)
-        instructions[15] = 32'b00000000000000000000000000000000;  // nop  (R)
-        instructions[16] = 32'b00000000000000000000000000000000;  // nop  (R)
-        instructions[17] = 32'b00000000000000000000000000000000;  // nop  (R)
-        instructions[18] = 32'b00010100100000001111111111110100;  // bne  (I)  | bnez $a0, loop (offset = -12)
-        instructions[19] = 32'b00000000000000000000000000000000;  // nop  (R)
-        // done:
-        instructions[20] = 32'b00001000000100000000000000010100;  // j    (J)  | j done (target = 20)
-        instructions[21] = 32'b00000000000000000000000000000000;  // nop  (R)
+        instructions[0]  = 32'b00100000000111010000100000000000;  // addi  (sp = 2048)
+        instructions[1]  = 32'b00000000000000000100000000100000;  // add   (t0 = 0)
+        instructions[2]  = 32'b00100000000010010000000000000001;  // addi  (t1 = 1)
+        instructions[3]  = 32'b00100000000001000000000000001000;  // addi  (a0 = 8)
+        instructions[4]  = 32'b00000000000000000000000000000000;  // nop   
+        instructions[5]  = 32'b00000000000000000000000000000000;  // nop   
+        instructions[6]  = 32'b00000000000000000000000000000000;  // nop   
+        instructions[7]  = 32'b00000001000010010001000000100000;  // add   (v0 = t0 + t1) <--- [Loop Target]
+        instructions[8]  = 32'b00000001001000000100000000100000;  // add   (t0 = t1)
+        instructions[9]  = 32'b00000000000000000000000000000000;  // nop   
+        instructions[10] = 32'b00000000000000000000000000000000;  // nop   
+        instructions[11] = 32'b00000000000000000000000000000000;  // nop   
+        instructions[12] = 32'b00000000010000000100100000100000;  // add   (t1 = v0)
+        instructions[13] = 32'b00100000100001001111111111111111;  // addi  (a0 = a0 - 1)
+        instructions[14] = 32'b00000000000000000000000000000000;  // nop   
+        instructions[15] = 32'b00000000000000000000000000000000;  // nop   
+        instructions[16] = 32'b00000000000000000000000000000000;  // nop   
+        instructions[17] = 32'b00000000000000000000000000000000;  // nop   
+        instructions[18] = 32'b00010100100000001111111111110100;  // bne   (if a0 != 0, jump back to inst [7])
+        instructions[19] = 32'b00000000000000000000000000000000;  // nop   (Branch Delay Slot 1)
+        instructions[20] = 32'b00001000000100000000000000010100;  // j     
+        instructions[21] = 32'b00000000000000000000000000000000;  // nop   (Jump Delay Slot)
         
         last_instr = 21;
 
