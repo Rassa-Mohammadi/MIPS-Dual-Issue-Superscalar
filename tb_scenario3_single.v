@@ -1,4 +1,4 @@
-module tb;
+module tb_scenario3_single;
     reg clk, rst, Jen;
     reg [31:0] instructions[512];
     reg [31:0] data_mem[512];
