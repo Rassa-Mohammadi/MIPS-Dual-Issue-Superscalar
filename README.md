@@ -102,6 +102,6 @@ Before running the project, make sure **Docker** is installed and running on you
 # Single-path pipeline
 ./judge.sh CPU_single.circ tb_fibo_single.v
 
-# Dual-path pipeline
+# Dual-path pipeline (Superscalar)
 ./judge.sh CPU_dual.circ tb_fibo_dual.v
 ```
