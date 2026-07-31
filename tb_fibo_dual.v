@@ -220,14 +220,14 @@ module tb;
             #2;
             
             if (InstDone1 === 1'b1 || InstDone2 === 1'b1) begin
-                
+
                 if (InstDone1 === 1'b1) begin
-                    $display("ipc Lane A : ", ipc);
+                    $display("ipc Lane 1 : ", ipc);
                     exec_internal();
                 end
                 
                 if (InstDone2 === 1'b1) begin
-                    $display("ipc Lane B : ", ipc);
+                    $display("ipc Lane 2 : ", ipc);
                     exec_internal();
                 end
 

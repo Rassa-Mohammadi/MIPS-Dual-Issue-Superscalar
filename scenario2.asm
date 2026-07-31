@@ -19,6 +19,4 @@ nop # $t5 is ready
 add $t0, $t1, $t2 # two dependent instructions
 sub $t3, $t0, $t4
 
-nop
-nop
-nop
+nop # to be paired with 'sub' after data hazard detection

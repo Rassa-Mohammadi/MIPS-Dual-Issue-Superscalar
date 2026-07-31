@@ -16,7 +16,8 @@ module tb_scenario1;
     reg [31:0] inst_imm_sext;
     
     reg [8:0] ipc;
-    reg [8:0] next_ipc; 
+    reg [8:0] pending_branch_target;
+    integer delay_slots_remaining;
     
     reg [31:0] ireg[32];
     reg [31:0] ireghi, ireglo;
@@ -43,8 +44,15 @@ module tb_scenario1;
         begin
             inst_reg = instructions[ipc];
             
-            ipc = next_ipc;
-            next_ipc = ipc + 1; 
+            ipc = ipc + 1;
+            
+            if (delay_slots_remaining > 0) begin
+                delay_slots_remaining = delay_slots_remaining - 1;
+                // apply jump/branch
+                if (delay_slots_remaining == 0) begin
+                    ipc = pending_branch_target;
+                end
+            end
 
             inst_rs = inst_reg[25:21];
             inst_rt = inst_reg[20:16];
@@ -65,7 +73,10 @@ module tb_scenario1;
                         6'b000100: write2reg(inst_rd, val_rs << val_rt[4:0]);  // sll
                         6'b000110: write2reg(inst_rd, val_rs >> val_rt[4:0]);  // srl
                         6'b000111: write2reg(inst_rd, sra(val_rs, val_rt[4:0]));  // sra
-                        6'b001000: next_ipc = val_rs; // jr (Jump Register) takes effect AFTER delay slot
+                        6'b001000: begin // jr 
+                            pending_branch_target = val_rs;
+                            delay_slots_remaining = 3;
+                        end
                         6'b000000: write2reg(inst_rd, val_rt << inst_reg[10:6]);  // sll (imm)
                         6'b011010: begin  // div HI=rs%rt; LO=rs/rt
                             ireghi = val_rs % val_rt;
@@ -76,9 +87,10 @@ module tb_scenario1;
                         default $display("NOT IMPLEMENTED : rtype[func: %b]", inst_reg[5:0]);
                     endcase
                 end
-                6'b000011: begin  // jal (Jump and Link)
-                    write2reg(31, ipc);          // Save return address (address of delay slot)
-                    next_ipc = inst_reg[25:0];   // Target takes effect AFTER delay slot
+                6'b000011: begin  // jal 
+                    write2reg(31, ipc); // Saves return address 
+                    pending_branch_target = inst_reg[25:0];      
+                    delay_slots_remaining = 3;
                 end
                 6'b001000: write2reg(inst_rt, val_rs + inst_imm_sext);  // addi
                 6'b101011: begin  // sw
@@ -94,10 +106,16 @@ module tb_scenario1;
                     write2reg(inst_rt, data_mem[(data_addr>>2)&511]);
                 end
                 6'b000101: begin  // bne
-                    if (val_rs != val_rt) next_ipc = ipc + inst_imm_sext; // Target takes effect AFTER delay slot
+                    if (val_rs != val_rt) begin
+                        pending_branch_target = ipc + inst_imm_sext;
+                        delay_slots_remaining = 3;
+                    end
                 end
                 6'b001010: write2reg(inst_rt, val_rs < inst_imm_sext ? 1 : 0);  // slti
-                6'b000010: next_ipc = inst_imm;  // j (Target takes effect AFTER delay slot)
+                6'b000010: begin // j 
+                    pending_branch_target = inst_imm; 
+                    delay_slots_remaining = 3;
+                end
                 default $display("NOT IMPLEMENTED : [opcode: %b]", inst_reg[31:26]);
             endcase
         end
@@ -140,7 +158,7 @@ module tb_scenario1;
         ireglo = 0;
         
         ipc = 0;
-        next_ipc = 1; // Initializes delay slot buffer
+        delay_slots_remaining = 0;
         fail_flag = 0;
         
         instructions[0]  = 32'b00100000000010010000000000000101;  // addi $t1, $zero, 5
@@ -157,10 +175,17 @@ module tb_scenario1;
         instructions[11]  = 32'b00000000000000000000000000000000;  // nop
         instructions[12]  = 32'b00000001001010100100000000100000;  // add $t0, $t1, $t2
         instructions[13]  = 32'b00000001100011010101100000100010;  // sub $t3, $t4, $t5
+        // the following nops are just for padding (4 cycles) and not part of the code
         instructions[14] = 32'b00000000000000000000000000000000;  // nop
         instructions[15] = 32'b00000000000000000000000000000000;  // nop
+        instructions[16] = 32'b00000000000000000000000000000000;  // nop
+        instructions[17] = 32'b00000000000000000000000000000000;  // nop
+        instructions[18] = 32'b00000000000000000000000000000000;  // nop
+        instructions[19] = 32'b00000000000000000000000000000000;  // nop
+        instructions[20] = 32'b00000000000000000000000000000000;  // nop
+        instructions[21] = 32'b00000000000000000000000000000000;  // nop
         
-        last_instr = 16;
+        last_instr = 14;
 
         rst = 1;
         #8 rst = 0;
@@ -184,13 +209,13 @@ module tb_scenario1;
             
             // If the pipeline signals an instruction reached Write-Back stage this cycle
             if (InstDone1 === 1'b1 || InstDone2 === 1'b1) begin
-                $display("ipc : ", ipc);
-                
                 if (InstDone1 === 1'b1) begin
+                    $display("ipc Lane 1 : ", ipc);
                     exec_internal();
                 end
                 
                 if (InstDone2 === 1'b1) begin
+                    $display("ipc Lane 2 : ", ipc);
                     exec_internal();
                 end
 
@@ -200,7 +225,7 @@ module tb_scenario1;
                         $display("failed at %d, Expected=%x, Found=%x", j, ireg[j], R[j]);
                     end
                 end
-                $display("Reality     : ", " [1]%x", R[1], " [2]%x", R[2], " [3]%x", R[3],
+                $display("Registers     : ", " [1]%x", R[1], " [2]%x", R[2], " [3]%x", R[3],
                         " [4]%x", R[4], " [5]%x", R[5], " [6]%x", R[6], " [7]%x", R[7],
                         " [8]%x", R[8], " [9]%x", R[9], " [10]%x", R[10], " [11]%x", R[11],
                         " [12]%x", R[12], " [13]%x", R[13], " [14]%x", R[14], " [15]%x", R[15],
