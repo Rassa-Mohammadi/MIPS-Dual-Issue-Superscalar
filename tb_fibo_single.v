@@ -224,6 +224,15 @@ module tb;
         end
 
         if (!fail_flag) begin
+            $display("Registers     : ", " [1]%x", R[1], " [2]%x", R[2], " [3]%x", R[3],
+                        " [4]%x", R[4], " [5]%x", R[5], " [6]%x", R[6], " [7]%x", R[7],
+                        " [8]%x", R[8], " [9]%x", R[9], " [10]%x", R[10], " [11]%x", R[11],
+                        " [12]%x", R[12], " [13]%x", R[13], " [14]%x", R[14], " [15]%x", R[15],
+                        " [16]%x", R[16], " [17]%x", R[17], " [18]%x", R[18], " [19]%x", R[19],
+                        " [20]%x", R[20], " [21]%x", R[21], " [22]%x", R[22], " [23]%x", R[23],
+                        " [24]%x", R[24], " [25]%x", R[25], " [26]%x", R[26], " [27]%x", R[27],
+                        " [28]%x", R[28],
+                        " [29]%x", R[29], " [30]%x", R[30], " [31]%x", R[31]);
             $display("Total Clock Cycles: %d", Total_Clock_Cycles);
             $display("Total Issued Instructions: %d", Total_Issued_Instructions);
             $display("Total Stalls: %d", Total_Stalls);

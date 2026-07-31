@@ -3,8 +3,8 @@
         addi    $t1, $zero, 1       # $t1 = F(1) = 1
         addi    $a0, $zero, 8       # $a0 = Loop counter 
         nop
-	    nop
-	    nop
+        nop
+        nop
 loop:
         add     $v0, $t0, $t1       # $v0 = F(n-1) + F(n-2)
         add     $t0, $t1, $zero     # Shift n-1 into n-2
