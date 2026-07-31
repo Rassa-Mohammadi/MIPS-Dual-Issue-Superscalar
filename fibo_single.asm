@@ -22,4 +22,4 @@ loop:
         nop                         
 done:
         j       done               
-	    nop               
+	nop               

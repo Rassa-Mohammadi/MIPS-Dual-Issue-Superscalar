@@ -204,7 +204,7 @@ module tb_scenario1;
         #2 rst = 0;  
 
         #8;
-        while (ipc < last_instr /*&& !fail_flag*/) begin
+        while (ipc < last_instr && !fail_flag) begin
             #2;
             
             // If the pipeline signals an instruction reached Write-Back stage this cycle

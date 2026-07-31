@@ -66,33 +66,42 @@ This project implements a **superscalar pipelined MIPS processor** using **Logis
 
 ---
 
+## Prerequisites
+
+Before running the project, make sure **Docker** is installed and running on your system, as the provided `judge.sh` script executes the tests inside a Docker container.
+
+---
+
 ## Running the Project
 
-scenario 1:
+### Scenario 1
+
 ```bash
 ./judge.sh CPU_dual.circ tb_scenario1.v
 ```
 
-scenario 2:
+### Scenario 2
+
 ```bash
 ./judge.sh CPU_dual.circ tb_scenario2.v
 ```
 
-scenario 3:
+### Scenario 3
+
 ```bash
-# Single-path pipline
+# Single-path pipeline
 ./judge.sh CPU_single.circ tb_scenario3_single.v
 
 # Dual-path pipeline
 ./judge.sh CPU_dual.circ tb_scenario3_dual.v
 ```
 
-fibonacci:
+### Fibonacci
+
 ```bash
-# Single-path pipline
+# Single-path pipeline
 ./judge.sh CPU_single.circ tb_fibo_single.v
 
 # Dual-path pipeline
 ./judge.sh CPU_dual.circ tb_fibo_dual.v
 ```
-
