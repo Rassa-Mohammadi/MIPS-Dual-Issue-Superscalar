@@ -1,4 +1,4 @@
-        addi $a0, $zero, 8      
+        addi $a0, $zero, 32      
         addi $t1, $zero, 1      
         addi $t3, $zero, 2      
         addi $t0, $zero, 5      
@@ -41,26 +41,66 @@ loop:
         sub  $s6, $s6, $t3      
         and  $s7, $s7, $t3      
         or   $t1, $t1, $t3      
+        xor  $t2, $t2, $t3      
+        add  $t4, $t4, $t3      
+        sub  $t5, $t5, $t3      
+        and  $t6, $t6, $t3      
+        or   $t7, $t7, $t3      
+        xor  $t8, $t8, $t3      
+        add  $t9, $t9, $t3      
+        sub  $v0, $v0, $t3      
+        and  $v1, $v1, $t3      
+        or   $s0, $s0, $t3      
+        xor  $s1, $s1, $t3      
+        add  $s2, $s2, $t3      
+        sub  $s3, $s3, $t3      
+        and  $s4, $s4, $t3      
+        or   $s5, $s5, $t3      
+        xor  $s6, $s6, $t3      
+        add  $s7, $s7, $t3      
+        sub  $t1, $t1, $t3      
+        and  $t2, $t2, $t3      
+        or   $t4, $t4, $t3      
         addi $t3, $t3, 1        
-        add  $t4, $t4, $t0      
-        sub  $t5, $t5, $t0      
-        and  $t6, $t6, $t0      
-        or   $t7, $t7, $t0      
-        xor  $t8, $t8, $t0      
-        add  $t9, $t9, $t0      
-        sub  $v0, $v0, $t0      
-        and  $v1, $v1, $t0      
-        or   $s0, $s0, $t0      
-        xor  $s1, $s1, $t0      
-        add  $s2, $s2, $t0      
-        sub  $s3, $s3, $t0      
-        and  $s4, $s4, $t0      
-        or   $s5, $s5, $t0      
-        xor  $s6, $s6, $t0      
-        add  $s7, $s7, $t0      
-        sub  $t1, $t1, $t0      
-        and  $t2, $t2, $t0      
-        or   $t4, $t4, $t0      
+        xor  $t5, $t5, $t0      
+        add  $t6, $t6, $t0      
+        sub  $t7, $t7, $t0      
+        and  $t8, $t8, $t0      
+        or   $t9, $t9, $t0      
+        xor  $v0, $v0, $t0      
+        add  $v1, $v1, $t0      
+        sub  $s0, $s0, $t0      
+        and  $s1, $s1, $t0      
+        or   $s2, $s2, $t0      
+        xor  $s3, $s3, $t0      
+        add  $s4, $s4, $t0      
+        sub  $s5, $s5, $t0      
+        and  $s6, $s6, $t0      
+        or   $s7, $s7, $t0      
+        xor  $t1, $t1, $t0      
+        add  $t2, $t2, $t0      
+        sub  $t4, $t4, $t0      
+        and  $t5, $t5, $t0      
+        or   $t6, $t6, $t0      
+        xor  $t7, $t7, $t0      
+        add  $t8, $t8, $t0      
+        sub  $t9, $t9, $t0      
+        and  $v0, $v0, $t0      
+        or   $v1, $v1, $t0      
+        xor  $s0, $s0, $t0      
+        add  $s1, $s1, $t0      
+        sub  $s2, $s2, $t0      
+        and  $s3, $s3, $t0      
+        or   $s4, $s4, $t0      
+        xor  $s5, $s5, $t0      
+        add  $s6, $s6, $t0      
+        sub  $s7, $s7, $t0      
+        and  $t1, $t1, $t0      
+        or   $t2, $t2, $t0      
+        xor  $t4, $t4, $t0      
+        add  $t5, $t5, $t0      
+        sub  $t6, $t6, $t0      
+        and  $t7, $t7, $t0      
         bnez $a0, loop          
         nop                     
 
